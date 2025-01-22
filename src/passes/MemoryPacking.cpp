@@ -442,7 +442,7 @@ void MemoryPacking::optimizeSegmentOps(Module* module) {
     bool requiresNonNullableLocalFixups() override { return false; }
 
     std::unique_ptr<Pass> create() override {
-      return std::make_unique<Optimizer>();
+      return createPass<Optimizer>();
     }
 
     bool needsRefinalizing;
@@ -871,7 +871,7 @@ void MemoryPacking::replaceSegmentOps(Module* module,
 
     Replacer(Replacements& replacements) : replacements(replacements){};
     std::unique_ptr<Pass> create() override {
-      return std::make_unique<Replacer>(replacements);
+      return createPass<Replacer>(replacements);
     }
 
     void visitMemoryInit(MemoryInit* curr) {

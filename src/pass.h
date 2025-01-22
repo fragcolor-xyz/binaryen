@@ -574,6 +574,20 @@ public:
   }
 };
 
+template<typename T, typename... TArgs>
+std::unique_ptr<T> createPass(TArgs&&... args) {
+  auto pass = std::make_unique<T>(std::forward<TArgs>(args)...);
+  pass->name = (typeid(T).name());
+  return pass;
+}
+
+template<typename T, typename... TArgs>
+T* createPassPtr(TArgs&&... args) {
+  auto pass = new T(std::forward<TArgs>(args)...);
+  pass->name = (typeid(T).name());
+  return pass;
+}
+
 } // namespace wasm
 
 #endif // wasm_pass_h

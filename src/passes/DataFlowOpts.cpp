@@ -40,7 +40,7 @@ struct DataFlowOpts : public WalkerPass<PostWalker<DataFlowOpts>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<DataFlowOpts>();
+    return createPass<DataFlowOpts>();
   }
 
   DataFlow::Users nodeUsers;

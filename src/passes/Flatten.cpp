@@ -75,7 +75,7 @@ struct Flatten
   bool invalidatesDWARF() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<Flatten>();
+    return createPass<Flatten>();
   }
 
   // For each expression, a bunch of expressions that should execute right

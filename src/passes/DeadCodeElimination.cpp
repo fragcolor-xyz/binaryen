@@ -50,7 +50,7 @@ struct DeadCodeElimination
   bool requiresNonNullableLocalFixups() override { return false; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<DeadCodeElimination>();
+    return createPass<DeadCodeElimination>();
   }
 
   // as we remove code, we must keep the types of other nodes valid

@@ -103,7 +103,7 @@ struct I64ToI32Lowering : public WalkerPass<PostWalker<I64ToI32Lowering>> {
   bool isFunctionParallel() override { return false; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<I64ToI32Lowering>();
+    return createPass<I64ToI32Lowering>();
   }
 
   void doWalkModule(Module* module) {

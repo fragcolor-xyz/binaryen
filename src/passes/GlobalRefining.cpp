@@ -129,7 +129,7 @@ struct GlobalRefining : public Pass {
         : parent(parent), wasm(wasm) {}
 
       std::unique_ptr<Pass> create() override {
-        return std::make_unique<GetUpdater>(parent, wasm);
+        return createPass<GetUpdater>(parent, wasm);
       }
 
       // If we modify anything in a function then we must refinalize so that

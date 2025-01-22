@@ -71,7 +71,7 @@ struct EnforceStackLimits : public WalkerPass<PostWalker<EnforceStackLimits>> {
   bool requiresNonNullableLocalFixups() override { return false; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<EnforceStackLimits>(
+    return createPass<EnforceStackLimits>(
       stackPointer, stackBase, stackLimit, builder, handler);
   }
 

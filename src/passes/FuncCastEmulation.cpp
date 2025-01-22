@@ -117,7 +117,7 @@ struct ParallelFuncCastEmulation
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<ParallelFuncCastEmulation>(ABIType, numParams);
+    return createPass<ParallelFuncCastEmulation>(ABIType, numParams);
   }
 
   ParallelFuncCastEmulation(HeapType ABIType, Index numParams)

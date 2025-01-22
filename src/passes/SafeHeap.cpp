@@ -70,7 +70,7 @@ struct AccessInstrumenter : public WalkerPass<PostWalker<AccessInstrumenter>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<AccessInstrumenter>(ignoreFunctions);
+    return createPass<AccessInstrumenter>(ignoreFunctions);
   }
 
   AccessInstrumenter(std::set<Name> ignoreFunctions)

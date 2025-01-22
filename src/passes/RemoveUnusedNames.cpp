@@ -36,7 +36,7 @@ struct RemoveUnusedNames
   bool requiresNonNullableLocalFixups() override { return false; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<RemoveUnusedNames>();
+    return createPass<RemoveUnusedNames>();
   }
 
   // We maintain a list of branches that we saw in children, then when we reach

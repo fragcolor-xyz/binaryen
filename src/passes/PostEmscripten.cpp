@@ -48,7 +48,7 @@ struct SegmentRemover : WalkerPass<PostWalker<SegmentRemover>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<SegmentRemover>(segment);
+    return createPass<SegmentRemover>(segment);
   }
 
   void visitMemoryInit(MemoryInit* curr) {
@@ -297,7 +297,7 @@ struct PostEmscripten : public Pass {
       bool isFunctionParallel() override { return true; }
 
       std::unique_ptr<Pass> create() override {
-        return std::make_unique<OptimizeInvokes>(map, flatTable);
+        return createPass<OptimizeInvokes>(map, flatTable);
       }
 
       std::map<Function*, Info>& map;

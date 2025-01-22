@@ -28,7 +28,7 @@ struct DeAlign : public WalkerPass<PostWalker<DeAlign>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<DeAlign>();
+    return createPass<DeAlign>();
   }
 
   void visitLoad(Load* curr) { curr->align = 1; }

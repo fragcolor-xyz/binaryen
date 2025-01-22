@@ -46,7 +46,7 @@ struct HeapStoreOptimization
   bool requiresNonNullableLocalFixups() override { return false; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<HeapStoreOptimization>();
+    return createPass<HeapStoreOptimization>();
   }
 
   // Branches outside of the function can be ignored, as we only look at local

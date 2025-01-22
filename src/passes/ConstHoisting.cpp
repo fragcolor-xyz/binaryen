@@ -45,7 +45,7 @@ struct ConstHoisting : public WalkerPass<PostWalker<ConstHoisting>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<ConstHoisting>();
+    return createPass<ConstHoisting>();
   }
 
   InsertOrderedMap<Literal, std::vector<Expression**>> uses;

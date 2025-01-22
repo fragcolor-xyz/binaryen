@@ -63,7 +63,7 @@ struct MergeLocals
   bool invalidatesDWARF() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<MergeLocals>();
+    return createPass<MergeLocals>();
   }
 
   void doWalkFunction(Function* func) {

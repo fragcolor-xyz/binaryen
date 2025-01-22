@@ -292,7 +292,7 @@ void localizeCallsTo(const std::unordered_set<Name>& callTargets,
     bool isFunctionParallel() override { return true; }
 
     std::unique_ptr<Pass> create() override {
-      return std::make_unique<LocalizerPass>(callTargets, onChange);
+      return createPass<LocalizerPass>(callTargets, onChange);
     }
 
     const std::unordered_set<Name>& callTargets;
@@ -337,7 +337,7 @@ void localizeCallsTo(const std::unordered_set<HeapType>& callTargets,
     bool isFunctionParallel() override { return true; }
 
     std::unique_ptr<Pass> create() override {
-      return std::make_unique<LocalizerPass>(callTargets);
+      return createPass<LocalizerPass>(callTargets);
     }
 
     const std::unordered_set<HeapType>& callTargets;

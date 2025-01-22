@@ -102,7 +102,7 @@ struct FunctionOptimizer : public WalkerPass<PostWalker<FunctionOptimizer>> {
   // that takes into account subtypes for quick computation, and also the raw
   // subtyping and new infos (information about struct.news).
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<FunctionOptimizer>(
+    return createPass<FunctionOptimizer>(
       propagatedInfos, subTypes, rawNewInfos, refTest);
   }
 
@@ -409,7 +409,7 @@ private:
 struct PCVScanner
   : public StructUtils::StructScanner<PossibleConstantValues, PCVScanner> {
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<PCVScanner>(
+    return createPass<PCVScanner>(
       functionNewInfos, functionSetGetInfos, functionCopyInfos);
   }
 

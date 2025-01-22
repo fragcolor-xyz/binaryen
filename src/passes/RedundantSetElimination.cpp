@@ -65,7 +65,7 @@ struct RedundantSetElimination
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<RedundantSetElimination>();
+    return createPass<RedundantSetElimination>();
   }
 
   // Branches outside of the function can be ignored, as we only look at locals

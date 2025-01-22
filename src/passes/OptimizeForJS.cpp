@@ -29,7 +29,7 @@ struct OptimizeForJSPass : public WalkerPass<PostWalker<OptimizeForJSPass>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<OptimizeForJSPass>();
+    return createPass<OptimizeForJSPass>();
   }
 
   void visitBinary(Binary* curr) {

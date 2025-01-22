@@ -81,7 +81,7 @@ struct GUFAOptimizer
     : oracle(oracle), optimizing(optimizing), castAll(castAll) {}
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<GUFAOptimizer>(oracle, optimizing, castAll);
+    return createPass<GUFAOptimizer>(oracle, optimizing, castAll);
   }
 
   bool optimized = false;

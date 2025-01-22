@@ -127,7 +127,7 @@ struct LegalizeJSInterface : public Pass {
         bool isFunctionParallel() override { return true; }
 
         std::unique_ptr<Pass> create() override {
-          return std::make_unique<Fixer>(illegalImportsToLegal);
+          return createPass<Fixer>(illegalImportsToLegal);
         }
 
         std::map<Name, Name>* illegalImportsToLegal;

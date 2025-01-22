@@ -57,7 +57,7 @@ struct RemoveNonJSOpsPass : public WalkerPass<PostWalker<RemoveNonJSOpsPass>> {
   bool isFunctionParallel() override { return false; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<RemoveNonJSOpsPass>();
+    return createPass<RemoveNonJSOpsPass>();
   }
 
   void doWalkModule(Module* module) {
@@ -340,7 +340,7 @@ struct StubUnsupportedJSOpsPass
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<StubUnsupportedJSOpsPass>();
+    return createPass<StubUnsupportedJSOpsPass>();
   }
 
   void visitUnary(Unary* curr) {

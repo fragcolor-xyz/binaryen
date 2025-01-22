@@ -449,7 +449,7 @@ class PoppifyFunctionsPass : public Pass {
     }
   }
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<PoppifyFunctionsPass>();
+    return createPass<PoppifyFunctionsPass>();
   }
 };
 
@@ -458,9 +458,9 @@ class PoppifyFunctionsPass : public Pass {
 class PoppifyPass : public Pass {
   void run(Module* module) {
     PassRunner subRunner(getPassRunner());
-    subRunner.add(std::make_unique<PoppifyFunctionsPass>());
+    subRunner.add(createPass<PoppifyFunctionsPass>());
     // TODO: Enable this once it handles Poppy blocks correctly
-    // subRunner.add(std::make_unique<ReFinalize>());
+    // subRunner.add(createPass<ReFinalize>());
     subRunner.run();
     lowerTupleGlobals(module);
   }

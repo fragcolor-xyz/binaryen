@@ -45,7 +45,7 @@ struct CallCountScanner : public WalkerPass<PostWalker<CallCountScanner>> {
   CallCountScanner(NameCountMap* counts) : counts(counts) {}
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<CallCountScanner>(counts);
+    return createPass<CallCountScanner>(counts);
   }
 
   void visitCall(Call* curr) {

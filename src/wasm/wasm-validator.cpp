@@ -242,7 +242,7 @@ struct FunctionValidator : public WalkerPass<PostWalker<FunctionValidator>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<FunctionValidator>(*getModule(), &info);
+    return createPass<FunctionValidator>(*getModule(), &info);
   }
 
   bool modifiesBinaryenIR() override { return false; }
@@ -4278,6 +4278,7 @@ bool WasmValidator::validate(Module& module, Flags flags) {
   // Parallel function validation.
   PassRunner runner(&module);
   FunctionValidator functionValidator(module, &info);
+  functionValidator.name = "FunctionValidator";
   functionValidator.validate(&runner);
 
   // Also validate imports, which were not covered in the parallel traversal

@@ -284,7 +284,7 @@ struct SignatureRefining : public Pass {
         : parent(parent), wasm(wasm) {}
 
       std::unique_ptr<Pass> create() override {
-        return std::make_unique<CodeUpdater>(parent, wasm);
+        return createPass<CodeUpdater>(parent, wasm);
       }
 
       void doWalkFunction(Function* func) {

@@ -248,7 +248,7 @@ struct Precompute
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<Precompute>(propagate);
+    return createPass<Precompute>(propagate);
   }
 
   bool propagate = false;

@@ -887,7 +887,7 @@ struct TypeGeneralizing : WalkerPass<PostWalker<TypeGeneralizing>> {
 
   bool isFunctionParallel() override { return true; }
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<TypeGeneralizing>();
+    return createPass<TypeGeneralizing>();
   }
 
   void runOnFunction(Module* wasm, Function* func) override {

@@ -410,7 +410,7 @@ struct StringLowering : public StringGathering {
       StringLowering& lowering;
 
       std::unique_ptr<Pass> create() override {
-        return std::make_unique<Replacer>(lowering);
+        return createPass<Replacer>(lowering);
       }
 
       Replacer(StringLowering& lowering) : lowering(lowering) {}

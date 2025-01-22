@@ -27,7 +27,7 @@ struct LLVMNonTrappingFPToIntLoweringImpl
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<LLVMNonTrappingFPToIntLoweringImpl>();
+    return createPass<LLVMNonTrappingFPToIntLoweringImpl>();
   }
 
   UnaryOp getReplacementOp(UnaryOp op) {
@@ -166,7 +166,7 @@ struct LLVMNonTrappingFPToIntLowering : public Pass {
     PassRunner runner(module);
     // Run the Impl pass as an inner pass in parallel. This pass updates the
     // module features, so it can't be parallel.
-    runner.add(std::make_unique<LLVMNonTrappingFPToIntLoweringImpl>());
+    runner.add(createPass<LLVMNonTrappingFPToIntLoweringImpl>());
     runner.setIsNested(true);
     runner.run();
     module->features.disable(FeatureSet::TruncSat);

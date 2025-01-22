@@ -287,7 +287,7 @@ struct OptimizeAddedConstants
   OptimizeAddedConstants(bool propagate) : propagate(propagate) {}
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<OptimizeAddedConstants>(propagate);
+    return createPass<OptimizeAddedConstants>(propagate);
   }
 
   void visitLoad(Load* curr) {

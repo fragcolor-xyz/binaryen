@@ -90,7 +90,7 @@ struct CodeFolding
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<CodeFolding>();
+    return createPass<CodeFolding>();
   }
 
   // information about a "tail" - code that reaches a point that we can

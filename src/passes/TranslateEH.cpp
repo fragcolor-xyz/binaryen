@@ -195,7 +195,7 @@ struct TranslateToExnref : public WalkerPass<PostWalker<TranslateToExnref>> {
   std::unordered_map<Type, Index> typeToScratchLocal;
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<TranslateToExnref>();
+    return createPass<TranslateToExnref>();
   }
 
   // Get a scratch local for a given type. These locals are used to contain

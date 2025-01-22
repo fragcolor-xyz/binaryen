@@ -32,7 +32,7 @@ struct FilteredPass : public Pass {
   std::unique_ptr<Pass> create() override {
     // Function-parallel passes get a new instance per function. Create a copy
     // of the wrapped pass along with ourselves.
-    return std::make_unique<FilteredPass>(pass->create(), relevantFuncs);
+    return createPass<FilteredPass>(pass->create(), relevantFuncs);
   }
 
   FilteredPass(std::unique_ptr<Pass>&& pass, const FuncSet& relevantFuncs)
@@ -83,7 +83,7 @@ struct FilteredPassRunner : public PassRunner {
 protected:
   void doAdd(std::unique_ptr<Pass> pass) override {
     PassRunner::doAdd(
-      std::make_unique<FilteredPass>(std::move(pass), relevantFuncs));
+      createPass<FilteredPass>(std::move(pass), relevantFuncs));
   }
 
 private:

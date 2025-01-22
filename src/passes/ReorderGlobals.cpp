@@ -51,7 +51,7 @@ struct UseCountScanner : public WalkerPass<PostWalker<UseCountScanner>> {
   UseCountScanner(AtomicNameCountMap& counts) : counts(counts) {}
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<UseCountScanner>(counts);
+    return createPass<UseCountScanner>(counts);
   }
 
   void visitGlobalGet(GlobalGet* curr) {

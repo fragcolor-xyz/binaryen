@@ -152,7 +152,7 @@ struct RemoveUnusedBrs : public WalkerPass<PostWalker<RemoveUnusedBrs>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<RemoveUnusedBrs>();
+    return createPass<RemoveUnusedBrs>();
   }
 
   bool anotherCycle;

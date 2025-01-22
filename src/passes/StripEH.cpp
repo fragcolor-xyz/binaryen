@@ -33,7 +33,7 @@ struct StripEHImpl : public WalkerPass<PostWalker<StripEHImpl>> {
   bool refinalize = false;
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<StripEHImpl>();
+    return createPass<StripEHImpl>();
   }
 
   void visitThrow(Throw* curr) {
@@ -68,7 +68,7 @@ struct StripEH : public Pass {
     PassRunner runner(wasm);
     // We run this as an inner pass to make it parallel. This StripEH pass
     // itself cannot be parallel because we need to disable the EH feature.
-    runner.add(std::make_unique<StripEHImpl>());
+    runner.add(createPass<StripEHImpl>());
     runner.setIsNested(true);
     runner.run();
     wasm->removeTags([](Tag*) { return true; });

@@ -33,7 +33,7 @@ namespace wasm {
 struct Vacuum : public WalkerPass<ExpressionStackWalker<Vacuum>> {
   bool isFunctionParallel() override { return true; }
 
-  std::unique_ptr<Pass> create() override { return std::make_unique<Vacuum>(); }
+  std::unique_ptr<Pass> create() override { return createPass<Vacuum>(); }
 
   void doWalkFunction(Function* func) {
     walk(func->body);

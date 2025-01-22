@@ -99,7 +99,7 @@ struct GlobalUseScanner : public WalkerPass<PostWalker<GlobalUseScanner>> {
   GlobalUseScanner(GlobalInfoMap* infos) : infos(infos) {}
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<GlobalUseScanner>(infos);
+    return createPass<GlobalUseScanner>(infos);
   }
 
   void visitGlobalSet(GlobalSet* curr) {
@@ -311,7 +311,7 @@ struct GlobalUseModifier : public WalkerPass<PostWalker<GlobalUseModifier>> {
     : copiedParentMap(copiedParentMap) {}
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<GlobalUseModifier>(copiedParentMap);
+    return createPass<GlobalUseModifier>(copiedParentMap);
   }
 
   void visitGlobalGet(GlobalGet* curr) {
@@ -346,7 +346,7 @@ struct ConstantGlobalApplier
     : constantGlobals(constantGlobals), optimize(optimize) {}
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<ConstantGlobalApplier>(constantGlobals, optimize);
+    return createPass<ConstantGlobalApplier>(constantGlobals, optimize);
   }
 
   // It is ok to look at adjacent blocks together, as if a later part of a block
@@ -441,7 +441,7 @@ struct GlobalSetRemover : public WalkerPass<PostWalker<GlobalSetRemover>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<GlobalSetRemover>(toRemove, optimize);
+    return createPass<GlobalSetRemover>(toRemove, optimize);
   }
 
   void visitGlobalSet(GlobalSet* curr) {

@@ -33,6 +33,8 @@
 #include "wasm-limits.h"
 #include "wasm-stack.h"
 
+#include <Tracy/tracy.hpp>
+
 #define DEBUG_TYPE "binary"
 
 namespace wasm {
@@ -50,6 +52,8 @@ void WasmBinaryWriter::prepare() {
 }
 
 void WasmBinaryWriter::write() {
+  ZoneScoped;
+
   writeHeader();
 
   writeDylinkSection();

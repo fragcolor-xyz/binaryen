@@ -166,7 +166,7 @@ struct J2CLItableMerging : public Pass {
       Reindexer(J2CLItableMerging& parent) : parent(parent) {}
 
       std::unique_ptr<Pass> create() override {
-        return std::make_unique<Reindexer>(parent);
+        return createPass<Reindexer>(parent);
       }
 
       void visitStructGet(StructGet* curr) {
@@ -261,7 +261,7 @@ struct J2CLItableMerging : public Pass {
       Rerouter(J2CLItableMerging& parent) : parent(parent) {}
 
       std::unique_ptr<Pass> create() override {
-        return std::make_unique<Rerouter>(parent);
+        return createPass<Rerouter>(parent);
       }
 
       void visitStructGet(StructGet* curr) {

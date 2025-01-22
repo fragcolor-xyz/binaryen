@@ -30,7 +30,7 @@ struct PickLoadSigns : public WalkerPass<ExpressionStackWalker<PickLoadSigns>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<PickLoadSigns>();
+    return createPass<PickLoadSigns>();
   }
 
   struct Usage {

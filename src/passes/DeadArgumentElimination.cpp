@@ -96,7 +96,7 @@ struct DAEScanner
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<DAEScanner>(infoMap);
+    return createPass<DAEScanner>(infoMap);
   }
 
   DAEScanner(DAEFunctionInfoMap* infoMap) : infoMap(infoMap) {}
@@ -533,10 +533,10 @@ private:
   }
 };
 
-Pass* createDAEPass() { return new DAE(); }
+Pass* createDAEPass() { return createPassPtr<DAE>(); }
 
 Pass* createDAEOptimizingPass() {
-  auto* ret = new DAE();
+  auto* ret = createPassPtr<DAE>();
   ret->optimize = true;
   return ret;
 }

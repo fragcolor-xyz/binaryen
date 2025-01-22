@@ -310,7 +310,7 @@ struct Outlining : public Pass {
     // not have finalized blocks with the correct types. ReFinalize now to fix
     // any issues.
     PassRunner runner(getPassRunner());
-    runner.add(std::make_unique<ReFinalize>());
+    runner.add(createPass<ReFinalize>());
     runner.run();
   }
 

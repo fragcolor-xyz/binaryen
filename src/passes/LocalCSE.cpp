@@ -597,7 +597,7 @@ struct LocalCSE : public WalkerPass<PostWalker<LocalCSE>> {
   bool invalidatesDWARF() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<LocalCSE>();
+    return createPass<LocalCSE>();
   }
 
   void doWalkFunction(Function* func) {

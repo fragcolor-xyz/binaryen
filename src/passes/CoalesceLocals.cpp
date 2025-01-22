@@ -52,7 +52,7 @@ struct CoalesceLocals
   bool invalidatesDWARF() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<CoalesceLocals>();
+    return createPass<CoalesceLocals>();
   }
 
   // Branches outside of the function can be ignored, as we only look at locals
@@ -601,7 +601,7 @@ void CoalesceLocals::applyIndices(std::vector<Index>& indices,
 
 struct CoalesceLocalsWithLearning : public CoalesceLocals {
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<CoalesceLocalsWithLearning>();
+    return createPass<CoalesceLocalsWithLearning>();
   }
 
   virtual void pickIndices(std::vector<Index>& indices) override;

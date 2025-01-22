@@ -41,7 +41,7 @@ struct SpillPointers
   bool addsEffects() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<SpillPointers>();
+    return createPass<SpillPointers>();
   }
 
   // a mapping of the pointers to all the spillable things. We need to know

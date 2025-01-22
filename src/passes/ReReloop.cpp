@@ -37,7 +37,7 @@ struct ReReloop final : public Pass {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<ReReloop>();
+    return createPass<ReReloop>();
   }
 
   std::unique_ptr<CFG::Relooper> relooper;

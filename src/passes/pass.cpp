@@ -900,6 +900,18 @@ void PassRunner::run() {
     std::vector<Pass*> stack;
     auto flush = [&]() {
       if (stack.size() > 0) {
+#if TRACY_ENABLE
+        std::string* passStack = new std::string();
+        for (auto& pass : stack) {
+          if (passStack->size() > 0) {
+            (*passStack) += ", ";
+          }
+          (*passStack) += pass->name;
+        }
+        ZoneScopedN("FlushStack");
+        ZoneText(passStack->c_str(), passStack->size());
+#endif
+
         // run the stack of passes on all the functions, in parallel
         size_t num = ThreadPool::get()->size();
         std::vector<std::function<ThreadWorkState()>> doWorkers;
@@ -908,13 +920,15 @@ void PassRunner::run() {
         size_t numFunctions = wasm->functions.size();
         for (size_t i = 0; i < num; i++) {
           doWorkers.push_back([&]() {
-            ZoneScopedN("Pass Runner");
             auto index = nextFunction.fetch_add(1);
             // get the next task, if there is one
             if (index >= numFunctions) {
               return ThreadWorkState::Finished; // nothing left
             }
+            ZoneScopedN("FunctionWorker");
+            ZoneValue(index);
             Function* func = this->wasm->functions[index].get();
+            ZoneText(func->name.str.data(), func->name.str.size());
             if (!func->imported()) {
               // do the current task: run all passes on this function
               for (auto* pass : stack) {
@@ -939,6 +953,8 @@ void PassRunner::run() {
         runPass(pass.get());
       }
     }
+
+
     flush();
   }
 }

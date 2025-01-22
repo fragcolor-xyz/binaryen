@@ -1439,7 +1439,7 @@ struct Heap2LocalPass : public WalkerPass<PostWalker<Heap2LocalPass>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<Heap2LocalPass>();
+    return createPass<Heap2LocalPass>();
   }
 
   void doWalkFunction(Function* func) {

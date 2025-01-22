@@ -75,7 +75,7 @@ struct SSAify : public Pass {
   bool invalidatesDWARF() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<SSAify>(allowMerges);
+    return createPass<SSAify>(allowMerges);
   }
 
   SSAify(bool allowMerges) : allowMerges(allowMerges) {}

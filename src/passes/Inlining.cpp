@@ -182,7 +182,7 @@ struct FunctionInfoScanner
   FunctionInfoScanner(NameInfoMap& infos) : infos(infos) {}
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<FunctionInfoScanner>(infos);
+    return createPass<FunctionInfoScanner>(infos);
   }
 
   void visitLoop(Loop* curr) {
@@ -271,7 +271,7 @@ struct Planner : public WalkerPass<TryDepthWalker<Planner>> {
   Planner(InliningState* state) : state(state) {}
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<Planner>(state);
+    return createPass<Planner>(state);
   }
 
   void visitCall(Call* curr) {
@@ -656,7 +656,7 @@ struct DoInlining : public Pass {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<DoInlining>(chosenActions);
+    return createPass<DoInlining>(chosenActions);
   }
 
   DoInlining(const ChosenActions& chosenActions)
@@ -1378,7 +1378,7 @@ struct Inlining : public Pass {
       PassUtils::FilteredPassRunner runner(
         module, inlinedInto, getPassRunner()->options);
       runner.setIsNested(true);
-      runner.add(std::make_unique<DoInlining>(chosenActions));
+      runner.add(createPass<DoInlining>(chosenActions));
       if (optimize) {
         OptUtils::addUsefulPassesAfterInlining(runner);
       }
@@ -1507,10 +1507,10 @@ struct InlineMainPass : public Pass {
   }
 };
 
-Pass* createInliningPass() { return new Inlining(); }
+Pass* createInliningPass() { return createPassPtr<Inlining>(); }
 
 Pass* createInliningOptimizingPass() {
-  auto* ret = new Inlining();
+  auto* ret = createPassPtr<Inlining>();
   ret->optimize = true;
   return ret;
 }

@@ -511,7 +511,7 @@ struct OptimizeCasts : public WalkerPass<PostWalker<OptimizeCasts>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<OptimizeCasts>();
+    return createPass<OptimizeCasts>();
   }
 
   void doWalkFunction(Function* func) {

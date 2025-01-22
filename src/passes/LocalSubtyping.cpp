@@ -42,7 +42,7 @@ struct LocalSubtyping : public WalkerPass<PostWalker<LocalSubtyping>> {
   bool requiresNonNullableLocalFixups() override { return false; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<LocalSubtyping>();
+    return createPass<LocalSubtyping>();
   }
 
   void doWalkFunction(Function* func) {

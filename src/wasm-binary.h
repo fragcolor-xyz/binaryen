@@ -27,6 +27,7 @@
 
 #include "ir/import-utils.h"
 #include "ir/module-utils.h"
+#include "support/file.h"
 #include "parsing.h"
 #include "source-map.h"
 #include "wasm-builder.h"
@@ -247,8 +248,14 @@ public:
   size_t writeAt(size_t i, U32LEB x) { return x.writeAt(this, i); }
 
   template<typename T> void writeTo(T& o) {
-    for (auto c : *this) {
-      o << c;
+    using T1 = std::decay_t<T>;
+    if constexpr (std::is_same_v<T1, wasm::Output>) {
+      wasm::Output& o1 = o;
+      o1.getStream().write((char*)data(), size());
+    } else {
+      for (auto c : *this) {
+        o << c;
+      }
     }
   }
 

@@ -65,7 +65,7 @@ struct FieldInfo {
 struct FieldInfoScanner
   : public StructUtils::StructScanner<FieldInfo, FieldInfoScanner> {
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<FieldInfoScanner>(functionNewInfos,
+    return createPass<FieldInfoScanner>(functionNewInfos,
                                               functionSetGetInfos);
   }
 
@@ -450,7 +450,7 @@ struct GlobalTypeOptimization : public Pass {
       FieldRemover(GlobalTypeOptimization& parent) : parent(parent) {}
 
       std::unique_ptr<Pass> create() override {
-        return std::make_unique<FieldRemover>(parent);
+        return createPass<FieldRemover>(parent);
       }
 
       void visitStructNew(StructNew* curr) {

@@ -264,7 +264,7 @@ struct TypeRefining : public Pass {
       ReadUpdater(TypeRefining& parent) : parent(parent) {}
 
       std::unique_ptr<Pass> create() override {
-        return std::make_unique<ReadUpdater>(parent);
+        return createPass<ReadUpdater>(parent);
       }
 
       void visitStructGet(StructGet* curr) {
@@ -375,7 +375,7 @@ struct TypeRefining : public Pass {
       bool requiresNonNullableLocalFixups() override { return false; }
 
       std::unique_ptr<Pass> create() override {
-        return std::make_unique<WriteUpdater>();
+        return createPass<WriteUpdater>();
       }
 
       void visitStructNew(StructNew* curr) {

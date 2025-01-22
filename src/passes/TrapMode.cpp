@@ -307,7 +307,7 @@ public:
   TrapModePass(TrapMode mode) : mode(mode) { assert(mode != TrapMode::Allow); }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<TrapModePass>(mode);
+    return createPass<TrapModePass>(mode);
   }
 
   void visitUnary(Unary* curr) {

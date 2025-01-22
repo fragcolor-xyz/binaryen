@@ -32,7 +32,7 @@ namespace {
 struct CatchPopFixup : public WalkerPass<PostWalker<CatchPopFixup>> {
   bool isFunctionParallel() override { return true; }
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<CatchPopFixup>();
+    return createPass<CatchPopFixup>();
   }
 
   void doWalkFunction(Function* func) {

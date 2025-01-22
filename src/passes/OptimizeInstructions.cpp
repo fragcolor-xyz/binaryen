@@ -220,7 +220,7 @@ struct OptimizeInstructions
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<OptimizeInstructions>();
+    return createPass<OptimizeInstructions>();
   }
 
   bool fastMath;

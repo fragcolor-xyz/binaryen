@@ -89,7 +89,7 @@ struct Scanner : public WalkerPass<PostWalker<Scanner>> {
   Scanner(OptInfo& optInfo) : optInfo(optInfo) {}
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<Scanner>(optInfo);
+    return createPass<Scanner>(optInfo);
   }
 
   // All the globals we read from. Any read of a global prevents us from
@@ -223,7 +223,7 @@ struct Optimizer
   Optimizer(OptInfo& optInfo) : optInfo(optInfo) {}
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<Optimizer>(optInfo);
+    return createPass<Optimizer>(optInfo);
   }
 
   void visitGlobalSet(GlobalSet* curr) {

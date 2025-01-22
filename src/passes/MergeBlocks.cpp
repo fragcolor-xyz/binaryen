@@ -459,7 +459,7 @@ struct MergeBlocks
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<MergeBlocks>();
+    return createPass<MergeBlocks>();
   }
 
   bool refinalize = false;

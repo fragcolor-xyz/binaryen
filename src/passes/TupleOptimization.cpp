@@ -55,7 +55,7 @@ struct TupleOptimization : public WalkerPass<PostWalker<TupleOptimization>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<TupleOptimization>();
+    return createPass<TupleOptimization>();
   }
 
   // Track the number of uses for each tuple local. We consider a use as a

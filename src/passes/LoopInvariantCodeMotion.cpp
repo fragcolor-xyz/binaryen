@@ -38,7 +38,7 @@ struct LoopInvariantCodeMotion
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<LoopInvariantCodeMotion>();
+    return createPass<LoopInvariantCodeMotion>();
   }
 
   using LoopSets = std::unordered_set<LocalSet*>;

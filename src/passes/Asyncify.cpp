@@ -896,7 +896,7 @@ struct AsyncifyFlow : public Pass {
   Name asyncifyMemory;
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<AsyncifyFlow>(
+    return createPass<AsyncifyFlow>(
       analyzer, pointerType, asyncifyMemory);
   }
 
@@ -1223,7 +1223,7 @@ struct AsyncifyAssertInNonInstrumented : public Pass {
   Name asyncifyMemory;
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<AsyncifyAssertInNonInstrumented>(
+    return createPass<AsyncifyAssertInNonInstrumented>(
       analyzer, pointerType, asyncifyMemory);
   }
 
@@ -1321,7 +1321,7 @@ struct AsyncifyLocals : public WalkerPass<PostWalker<AsyncifyLocals>> {
   Name asyncifyMemory;
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<AsyncifyLocals>(
+    return createPass<AsyncifyLocals>(
       analyzer, pointerType, asyncifyMemory);
   }
 
@@ -1729,7 +1729,7 @@ struct Asyncify : public Pass {
         runner.add("merge-blocks");
       }
       runner.add(
-        std::make_unique<AsyncifyFlow>(&analyzer, pointerType, asyncifyMemory));
+        createPass<AsyncifyFlow>(&analyzer, pointerType, asyncifyMemory));
       runner.setIsNested(true);
       runner.setValidateGlobally(false);
       runner.run();
@@ -1738,7 +1738,7 @@ struct Asyncify : public Pass {
       // Add asserts in non-instrumented code. Note we do not use an
       // instrumented pass runner here as we do want to run on all functions.
       PassRunner runner(module);
-      runner.add(std::make_unique<AsyncifyAssertInNonInstrumented>(
+      runner.add(createPass<AsyncifyAssertInNonInstrumented>(
         &analyzer, pointerType, asyncifyMemory));
       runner.setIsNested(true);
       runner.setValidateGlobally(false);
@@ -1754,7 +1754,7 @@ struct Asyncify : public Pass {
       if (optimize) {
         runner.addDefaultFunctionOptimizationPasses();
       }
-      runner.add(std::make_unique<AsyncifyLocals>(
+      runner.add(createPass<AsyncifyLocals>(
         &analyzer, pointerType, asyncifyMemory));
       if (optimize) {
         runner.addDefaultFunctionOptimizationPasses();
@@ -1873,7 +1873,7 @@ struct ModAsyncify
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<
+    return createPass<
       ModAsyncify<neverRewind, neverUnwind, importsAlwaysUnwind>>();
   }
 
@@ -2008,7 +2008,7 @@ private:
 //
 
 Pass* createModAsyncifyAlwaysOnlyUnwindPass() {
-  return new ModAsyncify<true, false, true>();
+  return createPassPtr<ModAsyncify<true, false, true>>();
 }
 
 //
@@ -2019,7 +2019,7 @@ struct ModAsyncifyNeverUnwind : public Pass {
 };
 
 Pass* createModAsyncifyNeverUnwindPass() {
-  return new ModAsyncify<false, true, false>();
+  return createPassPtr<ModAsyncify<false, true, false>>();
 }
 
 } // namespace wasm

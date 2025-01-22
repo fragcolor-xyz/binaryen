@@ -72,7 +72,7 @@ struct FunctionDirectizer : public WalkerPass<PostWalker<FunctionDirectizer>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<FunctionDirectizer>(tables);
+    return createPass<FunctionDirectizer>(tables);
   }
 
   FunctionDirectizer(const TableInfoMap& tables) : tables(tables) {}
@@ -293,6 +293,6 @@ struct Directize : public Pass {
 
 } // anonymous namespace
 
-Pass* createDirectizePass() { return new Directize(); }
+Pass* createDirectizePass() { return createPassPtr<Directize>(); }
 
 } // namespace wasm

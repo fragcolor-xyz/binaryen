@@ -92,7 +92,7 @@ struct DebugLocationPropagation
   }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<DebugLocationPropagation>();
+    return createPass<DebugLocationPropagation>();
   }
 };
 

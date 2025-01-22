@@ -25,7 +25,7 @@ struct IntrinsicLowering : public WalkerPass<PostWalker<IntrinsicLowering>> {
   bool isFunctionParallel() override { return true; }
 
   std::unique_ptr<Pass> create() override {
-    return std::make_unique<IntrinsicLowering>();
+    return createPass<IntrinsicLowering>();
   }
 
   void visitCall(Call* curr) {
