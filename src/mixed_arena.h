@@ -61,7 +61,7 @@
 struct MixedArena {
   // fast bump allocation
 
-  static const size_t CHUNK_SIZE = 32768;
+  static const size_t CHUNK_SIZE = 32768*8;
   static const size_t MAX_ALIGN = 16; // allow 128bit SIMD
 
   // Each pointer in chunks is to a multiple of CHUNK_SIZE - typically 1,

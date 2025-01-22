@@ -327,7 +327,7 @@ struct Walker : public VisitorType {
 private:
   // the address of the current node, used to replace it
   Expression** replacep = nullptr;
-  SmallVector<Task, 10> stack;      // stack of tasks
+  SmallVector<Task, 128> stack;      // stack of tasks
   Function* currFunction = nullptr; // current function being processed
   Module* currModule = nullptr;     // current module being processed
 };

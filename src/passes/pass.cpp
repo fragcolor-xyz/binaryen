@@ -30,6 +30,7 @@
 #include "wasm-debug.h"
 #include "wasm-io.h"
 #include "wasm-validator.h"
+#include <tracy/Tracy.hpp>
 
 namespace wasm {
 
@@ -907,6 +908,7 @@ void PassRunner::run() {
         size_t numFunctions = wasm->functions.size();
         for (size_t i = 0; i < num; i++) {
           doWorkers.push_back([&]() {
+            ZoneScopedN("Pass Runner");
             auto index = nextFunction.fetch_add(1);
             // get the next task, if there is one
             if (index >= numFunctions) {
@@ -1000,10 +1002,11 @@ void PassRunner::runPassOnFunction(Pass* pass, Function* func) {
   // useful - leave it to the entire module to fail validation in that case.
   bool extraFunctionValidation =
     passDebug == 2 && options.validate && !pass->name.empty();
-  std::stringstream bodyBefore;
-  if (extraFunctionValidation) {
-    bodyBefore << *func->body << '\n';
-  }
+    std::optional<std::stringstream> bodyBefore;
+    if (extraFunctionValidation) {
+      bodyBefore.emplace();
+      (*bodyBefore) << *func->body << '\n';
+    }
 
   // Function-parallel passes get a new instance per function
   auto instance = pass->create();
@@ -1016,7 +1019,7 @@ void PassRunner::runPassOnFunction(Pass* pass, Function* func) {
       Fatal() << "Last nested function-parallel pass (" << pass->name
               << ") broke validation of function " << func->name
               << ". Here is the function body before:\n"
-              << bodyBefore.str() << "\n\nAnd here it is now:\n"
+              << (*bodyBefore).str() << "\n\nAnd here it is now:\n"
               << *func->body << '\n';
     }
   }

@@ -51,6 +51,33 @@ public:
   Module& module;
   FeatureSet features;
 
+  void clear() {
+    branchesOut = false;
+    calls = false;
+    localsRead.clear();
+    localsWritten.clear();
+    mutableGlobalsRead.clear();
+    globalsWritten.clear();
+    readsMemory = false;
+    writesMemory = false;
+    readsTable = false;
+    writesTable = false;
+    readsMutableStruct = false;
+    writesStruct = false;
+    readsArray = false;
+    writesArray = false;
+    trap = false;
+    implicitTrap = false;
+    isAtomic = false;
+    throws_ = false;
+    tryDepth = 0;
+    catchDepth = 0;
+    danglingPop = false;
+    hasReturnCallThrow = false;
+    breakTargets.clear();
+    delegateTargets.clear();
+  }
+
   // Walk an expression and all its children.
   void walk(Expression* ast) {
     InternalAnalyzer(*this).walk(ast);

@@ -125,6 +125,30 @@ struct SimplifyLocals
   // In rare cases we make a change to a type that requires a refinalize.
   bool refinalize = false;
 
+  std::optional<EffectAnalyzer> reusableEffectAnalyzer0;
+  std::optional<EffectAnalyzer> reusableEffectAnalyzer1;
+
+  EffectAnalyzer& getEffectAnalyzer() {
+    if (!reusableEffectAnalyzer0) {
+      reusableEffectAnalyzer0.emplace(this->getPassOptions(), *this->getModule());
+    }
+    reusableEffectAnalyzer0->clear();
+    return *reusableEffectAnalyzer0;
+  }
+  EffectAnalyzer& getSinkEffectAnalyzer(Expression* ast) {
+    if (!reusableEffectAnalyzer1) {
+      reusableEffectAnalyzer1.emplace(this->getPassOptions(), *this->getModule());
+    }
+    reusableEffectAnalyzer1->clear();
+    reusableEffectAnalyzer1->walk(ast);
+    return *reusableEffectAnalyzer1;
+  }
+
+  void run(Module* module) override {
+    WalkerPass<LinearExecutionWalker<
+      SimplifyLocals<allowTee, allowStructure, allowNesting>>>::run(module);
+  }
+
   static void
   doNoteNonLinear(SimplifyLocals<allowTee, allowStructure, allowNesting>* self,
                   Expression** currp) {
@@ -338,7 +362,7 @@ struct SimplifyLocals
       }
     }
 
-    EffectAnalyzer effects(self->getPassOptions(), *self->getModule());
+    EffectAnalyzer& effects = self->getEffectAnalyzer();
     if (effects.checkPre(curr)) {
       self->checkInvalidations(effects);
     }
@@ -424,7 +448,7 @@ struct SimplifyLocals
       }
     }
 
-    EffectAnalyzer effects(self->getPassOptions(), *self->getModule());
+    EffectAnalyzer effects = self->getEffectAnalyzer();
     if (effects.checkPost(original)) {
       self->checkInvalidations(effects);
     }
@@ -450,8 +474,7 @@ struct SimplifyLocals
     // We cannot move expressions containing pops that are not enclosed in
     // 'catch', because 'pop' should follow right after 'catch'.
     FeatureSet features = this->getModule()->features;
-    if (features.hasExceptionHandling() &&
-        EffectAnalyzer(this->getPassOptions(), *this->getModule(), set->value)
+    if (features.hasExceptionHandling() && this->getSinkEffectAnalyzer(set->value)
           .danglingPop) {
       return false;
     }

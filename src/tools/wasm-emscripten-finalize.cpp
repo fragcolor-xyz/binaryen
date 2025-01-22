@@ -31,6 +31,8 @@
 #include "wasm-emscripten.h"
 #include "wasm-io.h"
 #include "wasm-validator.h"
+#include <mimalloc-new-delete.h>
+#include <mimalloc-override.h> 
 
 #define DEBUG_TYPE "emscripten"
 

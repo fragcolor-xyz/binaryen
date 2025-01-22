@@ -10,6 +10,8 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "Minimum OS X deployment ve
 project(binaryen LANGUAGES C CXX VERSION 121)
 include(GNUInstallDirs)
 
+add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
+
 # The C++ standard whose features are required to build Binaryen.
 # Keep in sync with scripts/test/shared.py cxx_standard
 # The if condition allows embedding in a project with a higher default C++ standard set
@@ -143,10 +145,19 @@ function(binaryen_setup_rpath name)
                         ${_install_name_dir})
 endfunction()
 
+set(MIMALLOC_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mimalloc/include)
 function(binaryen_add_executable name sources)
   add_executable(${name} ${sources})
   target_link_libraries(${name} ${CMAKE_THREAD_LIBS_INIT})
   target_link_libraries(${name} binaryen)
+  target_link_libraries(${name} mimalloc-static)
+  target_link_libraries(${name} TracyClient)
+  target_include_directories(${name} PUBLIC ${MIMALLOC_INCLUDE_DIR})
+  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    # target_compile_options(${name} PUBLIC "--includemimalloc-new-delete.h")
+  else()
+    # target_compile_options(${name} PUBLIC "/FI ${MIMALLOC_INCLUDE_DIR}/mimalloc-new-delete.h")
+  endif()
   binaryen_setup_rpath(${name})
   install(TARGETS ${name} DESTINATION ${CMAKE_INSTALL_BINDIR})
 endfunction()
@@ -176,6 +187,12 @@ endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third_party/FP16/include)
+
+set(MI_BUILD_SHARED OFF CACHE BOOL "Build shared library" FORCE)
+set(MI_BUILD_STATIC ON CACHE BOOL "Build static library" FORCE)
+set(TRACY_STATIC ON CACHE BOOL "Build Tracy as a static library" FORCE)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/mimalloc)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/tracy) 
 if(BUILD_LLVM_DWARF)
   include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-project/include)
 endif()
@@ -251,7 +268,7 @@ if(MSVC)
       # Compile with `/MT` to link against `libcmt.lib`, removing a dependency
       # on `msvcrt.dll`. May result in slightly larger binaries but they should
       # be more portable across systems.
-      string(REPLACE "/MD" "/MT" ${flags_var_to_scrub} "${${flags_var_to_scrub}}")
+      # string(REPLACE "/MD" "/MT" ${flags_var_to_scrub} "${${flags_var_to_scrub}}")
     endforeach()
   endif()
 

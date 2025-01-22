@@ -20,6 +20,8 @@
 //
 
 #include <memory>
+#include <mimalloc-new-delete.h>
+#include <mimalloc-override.h>
 
 #include "execution-results.h"
 #include "fuzzing.h"
